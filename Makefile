@@ -1,2 +1,2 @@
 run:
-	python rng.py
+	python data.py
