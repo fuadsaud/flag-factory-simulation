@@ -2,19 +2,29 @@ import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
 
-def generate_dataset(min, max, mean, std, size):
+def generate_dataset(min, max, mean, std, size, delta=2):
     while True:
         dataset = np.random.uniform(min, max, size)
         m = np.mean(dataset)
         s = np.std(dataset)
 
-        if round(mean, 2) == round(m, 2) and round(std, 2) == round(s, 2):
+        if round(mean, delta) == round(m, delta) and round(std, delta) == round(s, delta):
             return dataset
 
-dataset =  generate_dataset(1, 2, 1.55, 0.28, 200)
-print dataset
-print round(np.mean(dataset), 2)
-print round(np.std(dataset), 2)
+stats = {
+    'print': (5, 7, 5.95, 0.81),
+    # 'press': (1, 1.5, 1.26, 0.16),
+    'cut': (1, 2, 1.55, 0.28),
+    # 'sew': (2, 3, 2.51, 0.27),
+    # 'package': (1, 2, 1.49, 0.25)
+}
+
+datasets = [generate_dataset(*params, size=50, delta=1) for params in stats.values()]
+
+for dataset in datasets:
+    print dataset
+    print round(np.mean(dataset), 2)
+    print round(np.std(dataset), 2)
 
 def main():
     print_dataset   = np.random.uniform(5, 7, 200)
