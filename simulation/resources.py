@@ -3,7 +3,7 @@ import simpy
 from numpy.random import weibull
 from numpy.random import uniform
 from numpy.random import binomial
-from numpy.random import poisson
+from numpy.random import negative_binomial
 
 class Servant(object):
     def __init__(self, env, capacity):
@@ -26,8 +26,7 @@ class PrintServant(SimpleServant):
 
     @property
     def service_time(self):
-        # TODO: use proper distribution
-        return weibull(self._alpha)
+        return negative_binomial(119, 0.24878)
 
 class PressServant(SimpleServant):
     def __init__(self, env, capacity, alpha):
@@ -36,8 +35,7 @@ class PressServant(SimpleServant):
 
     @property
     def service_time(self):
-        # TODO: use proper distribution
-        return weibull(self._alpha)
+        return uniform(60, 91)
 
 class CutServant(SimpleServant):
     def __init__(self, env, capacity, alpha):
@@ -46,8 +44,7 @@ class CutServant(SimpleServant):
 
     @property
     def service_time(self):
-        # TODO: use proper distribution
-        return weibull(self._alpha)
+        return uniform(63, 121)
 
 class SewServant(SimpleServant):
     def __init__(self, env, capacity, alpha):
@@ -56,8 +53,7 @@ class SewServant(SimpleServant):
 
     @property
     def service_time(self):
-        # TODO: use proper distribution
-        return weibull(self._alpha)
+        return uniform(119, 178)
 
 class PackageServant(SimpleServant):
     def __init__(self, env, capacity, alpha):
@@ -66,5 +62,4 @@ class PackageServant(SimpleServant):
 
     @property
     def service_time(self):
-        # TODO: use proper distribution
-        return weibull(self._alpha)
+        return uniform(57, 121)
