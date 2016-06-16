@@ -1,6 +1,9 @@
 import simpy
 
 from numpy.random import weibull
+from numpy.random import uniform
+from numpy.random import binomial
+from numpy.random import poisson
 
 class Servant(object):
     def __init__(self, env, capacity):
