@@ -85,9 +85,6 @@ def execute_simulation(configuration):
     for res in resources:
         patch_resource(res, post=partial(monitor, stats, resources))
 
-    environment.run(until=1 * 60 * 60)
-
-    pp.pprint(stats)
-    pp.pprint(len(order_generator._orders))
+    environment.run(until=configuration['hours'] * 60 * 60)
 
     return stats

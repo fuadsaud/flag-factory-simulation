@@ -22,7 +22,6 @@ class OrderGenerator(object):
             orders_to_generate = binomial(29, .87, 1)
 
             for _ in range(orders_to_generate):
-                print 'generated order'
                 self._orders.append(
                     Order(
                         self._env,
