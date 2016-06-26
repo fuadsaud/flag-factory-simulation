@@ -1,8 +1,6 @@
 import simpy
 
-from numpy.random import weibull
 from numpy.random import uniform
-from numpy.random import binomial
 from numpy.random import negative_binomial
 
 class Servant(object):
