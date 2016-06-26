@@ -1,5 +1,7 @@
 from simulation import execute_simulation
 
+from graphdata import GraphData
+
 import matplotlib.pyplot as plt
 from pprint import PrettyPrinter
 
@@ -16,26 +18,11 @@ stats = execute_simulation({
     'order_lambda': 2
 })
 
-timestamps = [snapshot['time'] for snapshot in stats]
-resources_by_snap = [snapshot['resources'] for snapshot in stats]
+gd = GraphData(stats)
 
-resources_stats = {
-    'print':   [snap[0] for snap in resources_by_snap],
-    'press':   [snap[1] for snap in resources_by_snap],
-    'cut':     [snap[2] for snap in resources_by_snap],
-    'sew':     [snap[3] for snap in resources_by_snap],
-    'package': [snap[4] for snap in resources_by_snap]
-}
-
-resources_queue_counts = {
-    resource_type: [d['queue'] for d in data]
-    for resource_type, data in resources_stats.iteritems()
-}
-
-resources_service_counts = {
-    resource_type: [d['service'] for d in data]
-    for resource_type, data in resources_stats.iteritems()
-}
+timestamps = gd.timestamps()
+resources_queue_counts = gd.queue_over_time()
+resources_service_counts = gd.service_over_time()
 
 colors = {
     'print':   'blue',

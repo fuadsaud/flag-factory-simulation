@@ -19,6 +19,15 @@ class SimpleServant(Servant):
     def request(self):
         return self._resource.request()
 
+class DispatcherServant(SimpleServant):
+    def __init__(self, env, capacity, alpha):
+        SimpleServant.__init__(self, env, capacity=1)
+        self._alpha = alpha
+
+    @property
+    def service_time(self):
+        return uniform(0, 30 * 60)
+
 class PrintServant(SimpleServant):
     def __init__(self, env, capacity, alpha):
         SimpleServant.__init__(self, env, capacity)
