@@ -1,2 +1,2 @@
 run:
-	python simulation/main.py
+	python main.py

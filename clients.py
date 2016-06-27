@@ -1,13 +1,12 @@
 from numpy.random import uniform
 
 class Order(object):
-    def __init__(self, env, _dispatcher, _print, _press, _cut, _sew, _package):
+    def __init__(self, env, _print, _press, _cut, _sew, _package):
         self._env = env
 
         self._times = {}
         self._times['created'] = self._env.now
 
-        self._dispatcher = _dispatcher
         self._print   = _print
         self._press   = _press
         self._cut     = _cut
@@ -22,20 +21,11 @@ class Order(object):
         return self.regular
 
     def regular(self):
-        yield self._env.process(self.do_dispatch())
         yield self._env.process(self.do_print())
         yield self._env.process(self.do_press())
         yield self._env.process(self.do_cut())
         yield self._env.process(self.do_sew())
         yield self._env.process(self.do_package())
-
-    def do_dispatch(self):
-        # with self._dispatcher.request() as req:
-        #     yield req
-
-        service_time = self._dispatcher.service_time
-
-        yield self._env.timeout(service_time)
 
     def do_print(self):
         with self._print.request() as req:

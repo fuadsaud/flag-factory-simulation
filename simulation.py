@@ -4,7 +4,6 @@ import pprint
 
 from functools import partial, wraps
 
-from resources import DispatcherServant
 from resources import PrintServant
 from resources import PressServant
 from resources import CutServant
@@ -66,7 +65,6 @@ def monitor(data, all_resources, resource):
 def execute_simulation(configuration):
     environment = simpy.Environment()
 
-    _dispatcher = DispatcherServant(environment, 1000, 1.0)
     _print   = PrintServant(environment, configuration['print'], 1.0)
     _press   = PressServant(environment, configuration['press'], 1.0)
     _cut     = CutServant(environment, configuration['cut'], 1.0)
@@ -78,7 +76,7 @@ def execute_simulation(configuration):
     order_generator = OrderGenerator(
         environment,
         configuration['order_lambda'],
-        _dispatcher, _print, _press, _cut, _sew, _package
+        _print, _press, _cut, _sew, _package
     )
 
     stats = []

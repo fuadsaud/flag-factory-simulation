@@ -3,13 +3,12 @@ from numpy.random import binomial
 from clients import Order
 
 class OrderGenerator(object):
-    def __init__(self, env, _lambda, _dispatcher, _print, _press, _cut, _sew, _package):
+    def __init__(self, env, _lambda, _print, _press, _cut, _sew, _package):
 
         self._env = env
         self._lambda = _lambda
         self._orders = []
 
-        self._dispatcher = _dispatcher
         self._print   = _print
         self._press   = _press
         self._cut     = _cut
@@ -26,7 +25,6 @@ class OrderGenerator(object):
                 self._orders.append(
                     Order(
                         self._env,
-                        self._dispatcher,
                         self._print,
                         self._press,
                         self._cut,
