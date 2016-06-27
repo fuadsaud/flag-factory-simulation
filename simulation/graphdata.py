@@ -43,3 +43,78 @@ class GraphData(object):
             }
 
         return self._queue_over_time
+
+    def queue_time(self):
+        if not hasattr(self, '_queue_time'):
+            self._queue_time = {
+                resource: self._reduce_time([state['queue'] for state in states])
+                for resource, states in self.resources_stats().iteritems()
+            }
+
+        return self._queue_time
+
+    def service_time(self):
+        if not hasattr(self, '_service_time'):
+            self._service_time = {
+                resource: self._reduce_time([state['service'] for state in states])
+                for resource, states in self.resources_stats().iteritems()
+            }
+
+        return self._service_time
+
+    def queue_ratio(self):
+        if not hasattr(self, '_queue_ratio'):
+            self._queue_ratio = {
+                resource: time / self.total_time() for resource, time in self.queue_time().iteritems()
+            }
+
+        return self._queue_ratio
+
+    def service_ratio(self):
+        if not hasattr(self, '_service_ratio'):
+            self._service_ratio = {
+                resource: time / self.total_time() for resource, time in self.service_time().iteritems()
+            }
+
+        return self._service_ratio
+
+
+    def total_time(self):
+        return self.timestamps()[-1]
+
+    def intervals(self):
+        if not hasattr(self, '_interval'):
+            self._intervals = []
+            prev_t = 0
+
+            for t in self.timestamps():
+                self._intervals.append(t - prev_t)
+                prev_t = t
+
+        return self._intervals
+
+    def _reduce_time(self, states):
+        tt = 0
+        prev_state = 0
+
+        for interval, state in zip(self.intervals(), states):
+            if prev_state > 0:
+                tt += interval
+
+            prev_state = state
+
+        return tt
+
+    # def _reduce_time(self, states):
+    #     s = 0
+    #     prev_t = 0
+
+    #     for t, state in zip(self.timestamps(), states):
+    #         if state == 0:
+    #             prev_t = 0
+
+    #         if state > 0:
+    #             s += (t - prev_t)
+    #             prev_t = t
+
+    #     return s
