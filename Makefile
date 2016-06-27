@@ -1,2 +1,2 @@
 run:
-	python data.py
+	python simulation/main.py
