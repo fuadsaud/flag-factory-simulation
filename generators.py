@@ -22,15 +22,20 @@ class OrderGenerator(object):
             orders_to_generate = binomial(29, .87, 1)
 
             for _ in range(orders_to_generate):
-                self._orders.append(
-                    Order(
-                        self._env,
-                        self._print,
-                        self._press,
-                        self._cut,
-                        self._sew,
-                        self._package
-                    )
-                )
+                self.newOrder()
 
             yield self._env.timeout(60 * 60)
+    def newOrder(self, prio =255):
+        self._orders.append(
+            Order(
+                self._env,
+                self._print,
+                self._press,
+                self._cut,
+                self._sew,
+                self._package,
+                self,
+                prio
+
+            )
+        )

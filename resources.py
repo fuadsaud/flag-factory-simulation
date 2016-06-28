@@ -12,10 +12,10 @@ class SimpleServant(Servant):
     def __init__(self, env, capacity):
         Servant.__init__(self, env, capacity)
 
-        self._resource = simpy.Resource(self._env, capacity=self._capacity)
-
-    def request(self):
-        return self._resource.request()
+        self._resource = simpy.PriorityResource(self._env, capacity=self._capacity)
+    def request(self, prio):
+        prio = 255
+        return self._resource.request(priority=3)
 
 class PrintServant(SimpleServant):
     def __init__(self, env, capacity, alpha):
