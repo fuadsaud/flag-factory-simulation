@@ -1,5 +1,5 @@
 from __future__ import division
-
+import numpy
 class GraphData(object):
     def __init__(self, stats):
         self._stats = stats
@@ -89,12 +89,14 @@ class GraphData(object):
 
     def total_time(self):
         return self.timestamps()[-1]
+    def orders_with_problem(self):
+        return len([order for order in self._stats['orders'] if hasattr(order,'error')])
 
     def started_orders(self):
         return len(self._stats['orders'])
 
     def finished_orders(self):
-        print [resource['queue'] for resource in self.resources_by_snap()[-1]]
+        # print [resource['queue'] for resource in self.resources_by_snap()[-1]]
         return self.started_orders() - sum([resource['queue'] for resource in self.resources_by_snap()[-1]])
 
     def intervals(self):
@@ -107,6 +109,31 @@ class GraphData(object):
                 prev_t = t
 
         return self._intervals
+
+    def times_details(self, type):
+        tmp = [ order._times[type] for order in self._stats['orders'] if hasattr(order,'_times') and type in order._times]
+        # print tmp
+        return {
+            "min" : min(tmp) if len(tmp)   else 0,
+            "mean" : numpy.mean(tmp) if len(tmp)   else 0,
+            "max" : max(tmp) if len(tmp)   else 0
+        }
+
+    def details_print(self):
+        return self.times_details("print_wait")
+
+    def details_cut(self):
+        return self.times_details("cut_wait")
+
+    def details_sew(self):
+        return self.times_details("sew_wait")
+
+    def details_package(self):
+        return self.times_details("package_wait")
+
+    def details_press(self):
+        return self.times_details("press_wait")
+
 
     def _reduce_time(self, states, resource_count):
         tt = 0
