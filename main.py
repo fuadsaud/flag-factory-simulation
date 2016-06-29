@@ -15,6 +15,7 @@ config = {
     'cut': 1,
     'sew': 5,
     'package': 2,
+    'orders_count': lambda: 550,
     'order_lambda': 2
 }
 

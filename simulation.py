@@ -76,7 +76,8 @@ def execute_simulation(configuration):
     order_generator = OrderGenerator(
         environment,
         configuration['order_lambda'],
-        _print, _press, _cut, _sew, _package
+        _print, _press, _cut, _sew, _package,
+        configuration['orders_count']
     )
 
     stats = []
