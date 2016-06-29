@@ -1,16 +1,18 @@
+from __future__ import division
+
 class GraphData(object):
     def __init__(self, stats):
         self._stats = stats
 
     def timestamps(self):
         if not hasattr(self, '_timestamps'):
-            self._timestamps = [snapshot['time'] for snapshot in self._stats]
+            self._timestamps = [snapshot['time'] for snapshot in self._stats['snapshots']]
 
         return self._timestamps
 
     def resources_by_snap(self):
         if not hasattr(self, '_resources_by_snap'):
-            self._resources_by_snap = [snapshot['resources'] for snapshot in self._stats]
+            self._resources_by_snap = [snapshot['resources'] for snapshot in self._stats['snapshots']]
 
         return self._resources_by_snap
 
@@ -47,7 +49,10 @@ class GraphData(object):
     def queue_time(self):
         if not hasattr(self, '_queue_time'):
             self._queue_time = {
-                resource: self._reduce_time([state['queue'] for state in states])
+                resource: self._reduce_time(
+                    [state['queue'] for state in states],
+                    self._stats['resource_counts'][resource]
+                )
                 for resource, states in self.resources_stats().iteritems()
             }
 
@@ -56,7 +61,10 @@ class GraphData(object):
     def service_time(self):
         if not hasattr(self, '_service_time'):
             self._service_time = {
-                resource: self._reduce_time([state['service'] for state in states])
+                resource: self._reduce_time(
+                    [state['service'] for state in states],
+                    self._stats['resource_counts'][resource]
+                )
                 for resource, states in self.resources_stats().iteritems()
             }
 
@@ -93,28 +101,13 @@ class GraphData(object):
 
         return self._intervals
 
-    def _reduce_time(self, states):
+    def _reduce_time(self, states, resource_count):
         tt = 0
         prev_state = 0
 
         for interval, state in zip(self.intervals(), states):
-            if prev_state > 0:
-                tt += interval
+            tt += interval * prev_state
 
             prev_state = state
 
-        return tt
-
-    # def _reduce_time(self, states):
-    #     s = 0
-    #     prev_t = 0
-
-    #     for t, state in zip(self.timestamps(), states):
-    #         if state == 0:
-    #             prev_t = 0
-
-    #         if state > 0:
-    #             s += (t - prev_t)
-    #             prev_t = t
-
-    #     return s
+        return tt / resource_count

@@ -86,4 +86,13 @@ def execute_simulation(configuration):
 
     environment.run(until=configuration['hours'] * 60 * 60)
 
-    return stats
+    return {
+        'snapshots': stats,
+        'resource_counts': {
+            'print':   configuration['print'],
+            'press':   configuration['press'],
+            'cut':     configuration['cut'],
+            'sew':     configuration['sew'],
+            'package': configuration['package'],
+        }
+    }

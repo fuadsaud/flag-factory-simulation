@@ -8,15 +8,17 @@ from pprint import PrettyPrinter
 def pprint(thing):
     PrettyPrinter(indent=4).pprint(thing)
 
-stats = execute_simulation({
-    'hours': 8,
+config = {
+    'hours': 1,
     'print': 3,
     'press': 1,
     'cut': 1,
     'sew': 5,
     'package': 2,
     'order_lambda': 2
-})
+}
+
+stats = execute_simulation(config)
 
 gd = GraphData(stats)
 
