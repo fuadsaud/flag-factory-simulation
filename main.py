@@ -38,6 +38,9 @@ print st
 print qr
 print sr
 
+print gd.started_orders()
+print gd.finished_orders()
+
 fig = plt.figure(1)
 
 ax = fig.add_subplot(221)

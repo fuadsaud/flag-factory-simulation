@@ -94,5 +94,6 @@ def execute_simulation(configuration):
             'cut':     configuration['cut'],
             'sew':     configuration['sew'],
             'package': configuration['package'],
-        }
+        },
+        'orders': order_generator._orders
     }

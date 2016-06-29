@@ -90,6 +90,13 @@ class GraphData(object):
     def total_time(self):
         return self.timestamps()[-1]
 
+    def started_orders(self):
+        return len(self._stats['orders'])
+
+    def finished_orders(self):
+        print [resource['queue'] for resource in self.resources_by_snap()[-1]]
+        return self.started_orders() - sum([resource['queue'] for resource in self.resources_by_snap()[-1]])
+
     def intervals(self):
         if not hasattr(self, '_interval'):
             self._intervals = []
