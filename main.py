@@ -1,5 +1,5 @@
 from simulation import execute_simulation
-
+from numpy.random import binomial
 from graphdata import GraphData
 
 import matplotlib.pyplot as plt
@@ -9,13 +9,13 @@ def pprint(thing):
     PrettyPrinter(indent=4).pprint(thing)
 
 config = {
-    'hours': 1,
+    'hours': 8,
     'print': 3,
     'press': 1,
     'cut': 1,
     'sew': 5,
     'package': 2,
-    'orders_count': lambda: 550,
+    'orders_count': lambda: binomial(29,.87,1),
     'order_lambda': 2
 }
 
@@ -33,14 +33,42 @@ st =  gd.service_time()
 qr = gd.queue_ratio()
 sr = gd.service_ratio()
 
-print tt
-print qt
-print st
-print qr
-print sr
+# print tt
+# print qt
+# print st
+# print qr
+# print sr
 
-print gd.started_orders()
-print gd.finished_orders()
+
+print('*************DATA****************')
+print "Orders created: %d" % (gd.started_orders())
+print "Orders not finished: %d" % (gd.started_orders() - gd.finished_orders())
+print "Orders with problem: %d" % (gd.orders_with_problem())
+
+tmp = gd.details_print();
+print "Print Queue time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_press();
+print "Press Queue time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_sew();
+print "Sew Queue time \t\t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_cut();
+print "Cut Queue time \t\t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_package();
+print "Package Queue time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+
+tmp = gd.details_print_service();
+print "Print Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_press_service();
+print "Press Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_sew_service();
+print "Sew Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_cut_service();
+print "Cut Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_package_service();
+print "Package Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+print('*********************************')
+
+
 
 fig = plt.figure(1)
 
