@@ -21,12 +21,15 @@ class OrderGenerator(object):
 
     def behavior(self):
         while True:
+            print 'asdasdasdasd'
             orders_to_generate = self._orders_count()
+            print orders_to_generate
 
             for _ in range(orders_to_generate):
                 self.newOrder()
 
             yield self._env.timeout(60 * 60)
+
     def newOrder(self, prio =255):
         self._orders.append(
             Order(
@@ -38,6 +41,5 @@ class OrderGenerator(object):
                 self._package,
                 self,
                 prio
-
             )
         )

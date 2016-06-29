@@ -23,7 +23,9 @@ stats = execute_simulation(config)
 
 gd = GraphData(stats)
 
-colors = { 'print': 'blue', 'press': 'green', 'cut': 'yellow', 'sew': 'red', 'package': 'orange' }
+resources = ['print', 'press', 'cut', 'sew', 'package']
+colors = ['blue', 'green', 'yellow', 'red', 'orange']
+colors_map = dict(zip(resources, colors))
 
 tt = gd.total_time()
 
@@ -74,26 +76,28 @@ fig = plt.figure(1)
 
 ax = fig.add_subplot(221)
 for resource_type, series in gd.queue_over_time().iteritems():
-    ax.plot(gd.timestamps(), series, colors[resource_type])
+    ax.plot(gd.timestamps(), series, colors_map[resource_type])
 ax.set_title('Queue')
 
 ax = fig.add_subplot(222)
 for resource_type, series in gd.service_over_time().iteritems():
-    ax.plot(gd.timestamps(), series, colors[resource_type])
+    ax.plot(gd.timestamps(), series, colors_map[resource_type])
 ax.set_title('Service')
 
 ax = fig.add_subplot(223)
-ax.bar(range(len(qr.keys())), qr.values(), color=colors.values(), align='center')
+ax.bar(range(len(resources)), [qr[r] for r in resources], color=colors, align='center')
 ax.set_ylim(0, 1)
-ax.set_xticks(range(len(qr.keys())))
-ax.set_xticklabels(qr.keys())
+ax.set_xticks(range(len(resources)))
+ax.set_xticklabels(resources)
 ax.set_title('Queue Time Ratio')
 
 ax = fig.add_subplot(224)
-ax.bar(range(len(sr.keys())), sr.values(), color=colors.values(), align='center')
+print sr
+print sr.keys()
+ax.bar(range(len(resources)), [sr[r] for r in resources], color=colors, align='center')
 ax.set_ylim(0, 1)
-ax.set_xticks(range(len(sr.keys())))
-ax.set_xticklabels(sr.keys())
+ax.set_xticks(range(len(resources)))
+ax.set_xticklabels(resources)
 ax.set_title('Service Time Ratio')
 
 plt.show()
