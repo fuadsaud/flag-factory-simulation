@@ -6,7 +6,7 @@ class GraphData(object):
 
     def timestamps(self):
         if not hasattr(self, '_timestamps'):
-            self._timestamps = [snapshot['time'] for snapshot in self._stats['snapshots']]
+            self._timestamps = [snapshot['time']/(60*60) for snapshot in self._stats['snapshots']]
 
         return self._timestamps
 
@@ -111,13 +111,32 @@ class GraphData(object):
         return self._intervals
 
     def times_details(self, type):
-        tmp = [ order._times[type] for order in self._stats['orders'] if hasattr(order,'_times') and type in order._times]
+        tmp = [ order._times[type]/60 for order in self._stats['orders'] if hasattr(order,'_times') and type in order._times]
         # print tmp
         return {
             "min" : min(tmp) if len(tmp)   else 0,
             "mean" : numpy.mean(tmp) if len(tmp)   else 0,
             "max" : max(tmp) if len(tmp)   else 0
         }
+    def times_details_service(self, type, type1):
+        tmp = [ (order._times[type] - order._times[type1])/60 for order in self._stats['orders'] if hasattr(order,'_times') and (type) in order._times]
+        # print tmp
+        return {
+            "min" : min(tmp) if len(tmp)   else 0,
+            "mean" : numpy.mean(tmp) if len(tmp)   else 0,
+            "max" : max(tmp) if len(tmp)   else 0
+        }
+
+    def details_print_service(self):
+        return self.times_details_service("print_end","print_start")
+    def details_cut_service(self):
+        return self.times_details_service("cut_end","cut_start")
+    def details_sew_service(self):
+        return self.times_details_service("sew_end","sew_start")
+    def details_package_service(self):
+        return self.times_details_service("package_end","package_start")
+    def details_press_service(self):
+        return self.times_details_service("press_end","press_start")
 
     def details_print(self):
         return self.times_details("print_wait")

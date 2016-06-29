@@ -13,8 +13,8 @@ config = {
     'print': 3,
     'press': 1,
     'cut': 1,
-    'sew': 2,
-    'package': 1,
+    'sew': 5,
+    'package': 2,
     'orders_count': lambda: binomial(29,.87,1),
     'order_lambda': 2
 }
@@ -56,8 +56,18 @@ print "Cut Queue time \t\t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean']
 tmp = gd.details_package();
 print "Package Queue time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
 
-
+tmp = gd.details_print_service();
+print "Print Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_press_service();
+print "Press Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_sew_service();
+print "Sew Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_cut_service();
+print "Cut Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
+tmp = gd.details_package_service();
+print "Package Service time \t\tmin: %s,mean: %s, max: %s" % (tmp["min"],tmp['mean'], tmp['max'])
 print('*********************************')
+
 
 
 fig = plt.figure(1)
